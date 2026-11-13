@@ -3916,3 +3916,244 @@ button:disabled { cursor: not-allowed; filter: saturate(.55); }
 @media (prefers-reduced-motion: reduce) {
     *, *:before, *:after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* =========================================================
+   SUSTEIN — REDESIGN VISUAL 2026 / CAMADA DE IDENTIDADE
+   Apenas apresentação: não altera IDs, eventos ou lógica JS.
+   ========================================================= */
+:root {
+  --bg-main: #eef3f8 !important;
+  --card-bg: #ffffff !important;
+  --border-color: #e2eaf1 !important;
+  --text-primary: #172b42 !important;
+  --text-secondary: #64788c !important;
+  --ms-blue: #176b87 !important;
+  --ms-blue-hover: #10566e !important;
+  --ms-blue-light: #e3f3f5 !important;
+  --radius-lg: 20px !important;
+  --radius-md: 14px !important;
+  --shadow-sm: 0 5px 18px rgba(25, 49, 72, .055) !important;
+  --shadow-md: 0 12px 30px rgba(25, 49, 72, .10) !important;
+}
+body {
+  background: #eef3f8 !important;
+  background-image:
+    radial-gradient(ellipse at 78% 0%, rgba(30, 151, 146, .09), transparent 34%),
+    linear-gradient(180deg, #f4f7fb 0%, #edf3f8 100%) !important;
+  color: #172b42 !important;
+}
+.main-content {
+  padding: clamp(22px, 3vw, 42px) !important;
+  gap: 22px !important;
+}
+.welcome-banner {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+  min-height: 178px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding: clamp(28px, 4vw, 48px) !important;
+  margin: 0 0 26px !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(112deg, #102b45 0%, #14556b 54%, #168b83 100%) !important;
+  box-shadow: 0 18px 42px rgba(16, 62, 83, .19) !important;
+}
+.welcome-banner:before {
+  content: "" !important;
+  position: absolute !important;
+  z-index: -1 !important;
+  width: 340px !important; height: 340px !important;
+  right: 4% !important; top: -190px !important;
+  border: 1px solid rgba(255,255,255,.16) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 32px rgba(255,255,255,.035), 0 0 0 68px rgba(255,255,255,.025) !important;
+}
+.welcome-banner:after {
+  content: "SUSTEIN" !important;
+  position: absolute !important;
+  z-index: -1 !important;
+  right: 34px !important; bottom: 12px !important;
+  width: auto !important; height: auto !important;
+  color: rgba(255,255,255,.075) !important;
+  background: none !important;
+  font-size: clamp(2.5rem, 8vw, 6rem) !important;
+  font-weight: 900 !important; letter-spacing: .08em !important;
+}
+.welcome-banner h2 {
+  color: #fff !important;
+  font-size: clamp(1.55rem, 3vw, 2.35rem) !important;
+  line-height: 1.12 !important;
+  font-weight: 850 !important;
+  letter-spacing: -.045em !important;
+  margin-bottom: 12px !important;
+}
+.welcome-banner p {
+  color: rgba(255,255,255,.82) !important;
+  font-size: clamp(.9rem, 1.3vw, 1.02rem) !important;
+  max-width: 620px !important;
+}
+.sidebar {
+  background: linear-gradient(180deg, #10283f 0%, #0c1c30 100%) !important;
+  border: 0 !important;
+  box-shadow: 10px 0 34px rgba(13, 35, 55, .10) !important;
+}
+.sidebar .menu-item { margin: 4px 10px !important; }
+.sidebar .menu-item > button {
+  min-height: 48px !important;
+  padding: 0 14px !important;
+  border-radius: 13px !important;
+  font-size: .91rem !important;
+}
+.sidebar .menu-item.active > button {
+  background: linear-gradient(100deg, rgba(41,190,164,.25), rgba(41,190,164,.08)) !important;
+  box-shadow: inset 3px 0 #4de0bd, 0 6px 18px rgba(0,0,0,.10) !important;
+}
+.dashboard-collapse-bar {
+  background: #fff !important;
+  border: 1px solid #e2eaf1 !important;
+  border-radius: 17px !important;
+  padding: 15px 19px !important;
+  margin-bottom: 18px !important;
+}
+.kpi-container {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)) !important;
+  gap: 16px !important;
+  margin: 0 0 24px !important;
+}
+.kpi-card {
+  position: relative !important;
+  min-height: 132px !important;
+  padding: 23px 22px !important;
+  overflow: hidden !important;
+  border: 1px solid #e2eaf1 !important;
+  border-radius: 19px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 18px rgba(25,49,72,.055) !important;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease !important;
+}
+.kpi-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #b9d9df !important;
+  box-shadow: 0 14px 28px rgba(25,49,72,.11) !important;
+}
+.kpi-card:after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important; top: 18px !important; bottom: 18px !important;
+  width: 4px !important;
+  border-radius: 0 5px 5px 0 !important;
+  background: linear-gradient(180deg, #1a9b91, #176b87) !important;
+}
+.kpi-title {
+  display: block !important;
+  color: #708398 !important;
+  font-size: .72rem !important;
+  font-weight: 800 !important;
+  line-height: 1.5 !important;
+  letter-spacing: .075em !important;
+  text-transform: uppercase !important;
+}
+.kpi-value {
+  margin-top: 13px !important;
+  color: #17334b !important;
+  font-size: clamp(1.8rem, 2.6vw, 2.35rem) !important;
+  font-weight: 850 !important;
+  letter-spacing: -.055em !important;
+}
+.card, .chart-card, .multiple-trades-card, .report-header, .report-body,
+.settings-group-item, .data-management-card {
+  border: 1px solid #e2eaf1 !important;
+  border-radius: 19px !important;
+  background: #fff !important;
+  box-shadow: 0 5px 18px rgba(25,49,72,.05) !important;
+}
+.card { padding: clamp(19px, 2.2vw, 28px) !important; }
+.card-title {
+  color: #1b354d !important;
+  font-size: 1.02rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -.025em !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid #e8eef3 !important;
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select, textarea {
+  min-height: 44px !important;
+  border: 1px solid #dce6ed !important;
+  border-radius: 11px !important;
+  background: #f8fafc !important;
+  color: #1c344a !important;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #208b91 !important;
+  box-shadow: 0 0 0 3px rgba(32,139,145,.13) !important;
+}
+.ms-btn, button.ms-btn, .search-box button {
+  min-height: 41px !important;
+  border-radius: 11px !important;
+  font-weight: 750 !important;
+}
+.ms-btn:not(.ms-btn-secondary) {
+  background: linear-gradient(110deg, #176b87, #168b83) !important;
+  border-color: transparent !important;
+  box-shadow: 0 5px 12px rgba(23,107,135,.18) !important;
+}
+.table-container {
+  border: 1px solid #e2eaf1 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 14px rgba(25,49,72,.035) !important;
+}
+thead th {
+  background: #f0f5f8 !important;
+  color: #63798d !important;
+  font-size: .69rem !important;
+  letter-spacing: .07em !important;
+}
+tbody tr:hover { background: #f2f8f8 !important; }
+.ms-modal .modal-content {
+  border: 1px solid #dce6ed !important;
+  border-radius: 20px !important;
+  box-shadow: 0 28px 80px rgba(12,30,48,.25) !important;
+}
+@media (max-width: 768px) {
+  .main-content { padding: 76px 14px 96px !important; }
+  .welcome-banner { min-height: 150px !important; margin-bottom: 18px !important; }
+  .welcome-banner:after { right: 14px !important; bottom: 7px !important; font-size: 2.6rem !important; }
+  .kpi-container { grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 11px !important; }
+  .kpi-card { min-height: 112px !important; padding: 17px 15px !important; }
+  .kpi-value { font-size: 1.65rem !important; }
+}
+@media (max-width: 380px) {
+  .kpi-container { grid-template-columns: 1fr !important; }
+  .welcome-banner h2 { font-size: 1.3rem !important; }
+}
+body.dark-mode {
+  --bg-main: #0b1725 !important;
+  --card-bg: #142438 !important;
+  --border-color: #263b50 !important;
+  --text-primary: #e8f0f7 !important;
+  --text-secondary: #9eb0c1 !important;
+  --ms-blue: #55b8bd !important;
+  --ms-blue-hover: #78d0cf !important;
+  --ms-blue-light: rgba(85,184,189,.14) !important;
+  background: #0b1725 !important;
+}
+body.dark-mode .main-content { color: #e8f0f7 !important; }
+body.dark-mode .kpi-card, body.dark-mode .card, body.dark-mode .chart-card,
+body.dark-mode .multiple-trades-card, body.dark-mode .report-header,
+body.dark-mode .report-body, body.dark-mode .settings-group-item,
+body.dark-mode .dashboard-collapse-bar {
+  background: #142438 !important;
+  border-color: #263b50 !important;
+}
+body.dark-mode .kpi-title, body.dark-mode label { color: #9eb0c1 !important; }
+body.dark-mode .kpi-value, body.dark-mode .card-title { color: #e8f0f7 !important; }
+body.dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+body.dark-mode select, body.dark-mode textarea {
+  background: #0e1d2d !important; color: #e8f0f7 !important; border-color: #30465c !important;
+}
