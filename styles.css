@@ -4157,3 +4157,196 @@ body.dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="file"
 body.dark-mode select, body.dark-mode textarea {
   background: #0e1d2d !important; color: #e8f0f7 !important; border-color: #30465c !important;
 }
+
+
+/* ==========================================================
+   SUSTEIN 2.0 — REESTRUTURAÇÃO VISUAL
+   Layout de aplicação operacional: navegação fixa, workspace,
+   dashboard em grade e superfícies de trabalho sem moldura.
+   Mantém IDs, DOM funcional e todos os handlers existentes.
+   ========================================================== */
+:root {
+  --s2-ink:#10243a;
+  --s2-teal:#087f78;
+  --s2-mint:#b9f1df;
+  --s2-canvas:#f3f6f8;
+  --s2-line:#e1e8ed;
+}
+body {
+  background:var(--s2-canvas) !important;
+  background-image:none !important;
+  font-family:Inter,"Segoe UI",system-ui,sans-serif !important;
+}
+@media (min-width: 769px) {
+  .sidebar.dock-left {
+    left:0 !important; top:0 !important; bottom:0 !important;
+    width:252px !important; height:100vh !important;
+    transform:none !important; border-radius:0 !important;
+    padding:26px 14px 18px !important;
+    display:flex !important; flex-direction:column !important;
+    background:linear-gradient(165deg,#102b42 0%,#0c1e31 58%,#102f3b 100%) !important;
+    box-shadow:12px 0 34px rgba(13,35,55,.12) !important;
+    border:0 !important;
+  }
+  .sidebar.dock-left:before {
+    content:"SUSTEIN";
+    display:flex; align-items:center; height:58px;
+    margin:0 12px 28px; padding-left:48px;
+    color:#f4fbff; font-size:20px; font-weight:850;
+    letter-spacing:.13em;
+    background:
+      radial-gradient(circle at 17px 50%,#73e2c2 0 7px,transparent 8px),
+      linear-gradient(135deg,rgba(92,220,190,.2),rgba(92,220,190,0));
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .sidebar.dock-left .sidebar-menu {
+    display:flex !important; flex-direction:column !important;
+    gap:7px !important; width:100% !important; flex:1;
+  }
+  .sidebar.dock-left .menu-item { margin:0 3px !important; width:auto !important; }
+  .sidebar.dock-left .menu-item > button {
+    width:100% !important; min-height:54px !important;
+    padding:0 15px !important; gap:14px !important;
+    border-radius:12px !important; color:#b9c9d6 !important;
+    font-size:14px !important; font-weight:600 !important;
+    letter-spacing:.01em; background:transparent !important;
+    box-shadow:none !important;
+  }
+  .sidebar.dock-left .menu-item > button .icon {
+    font-size:21px !important; color:#8ea9b9 !important;
+  }
+  .sidebar.dock-left .menu-item > button:hover {
+    background:rgba(255,255,255,.075) !important;
+    color:#fff !important; transform:translateX(2px);
+  }
+  .sidebar.dock-left .menu-item.active > button {
+    color:#fff !important;
+    background:linear-gradient(100deg,rgba(49,190,157,.25),rgba(49,190,157,.08)) !important;
+    box-shadow:inset 3px 0 #66e0bd !important;
+  }
+  .sidebar.dock-left .menu-item.active > button .icon { color:#72e5c4 !important; }
+  .sidebar.dock-left #sidebar-pull-tab { display:none !important; }
+  .main-content,
+  .main-content.dock-left.sidebar-open,
+  .sidebar.dock-left.mode-icons-floating + .main-content {
+    margin-left:252px !important; margin-right:0 !important;
+    width:calc(100% - 252px) !important;
+    padding:34px clamp(24px,3.2vw,54px) 52px !important;
+    max-width:none !important;
+  }
+}
+.welcome-banner {
+  min-height:184px !important; padding:34px 40px !important;
+  margin:0 0 26px !important; border:0 !important;
+  border-radius:22px !important;
+  background:linear-gradient(112deg,#102a42 0%,#12535a 57%,#168b78 100%) !important;
+  box-shadow:0 18px 38px rgba(16,52,70,.14) !important;
+  display:flex !important; flex-direction:column !important;
+  justify-content:center !important;
+}
+.welcome-banner:before {
+  width:390px !important; height:390px !important;
+  right:5% !important; top:-250px !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  box-shadow:0 0 0 35px rgba(255,255,255,.035),0 0 0 75px rgba(255,255,255,.025) !important;
+}
+.welcome-banner:after {
+  content:"WORKSPACE  /  INVENTÁRIO & OPERAÇÕES" !important;
+  position:relative !important; inset:auto !important;
+  margin-top:18px !important; color:#a9e9d9 !important;
+  font-size:10px !important; font-weight:800 !important;
+  letter-spacing:.18em !important; opacity:1 !important;
+}
+.welcome-banner h2 { font-size:clamp(1.8rem,3vw,2.55rem) !important; letter-spacing:-.055em !important; }
+.welcome-banner p { font-size:14px !important; max-width:600px !important; }
+.ms-panel {
+  background:transparent !important; border:0 !important;
+  box-shadow:none !important; padding:0 !important;
+  backdrop-filter:none !important;
+}
+.dashboard-collapse-bar {
+  border:0 !important; border-radius:14px !important;
+  box-shadow:0 2px 8px rgba(20,45,65,.035) !important;
+  margin-bottom:18px !important;
+}
+.kpi-container {
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:15px !important; margin-bottom:22px !important;
+}
+.kpi-card {
+  position:relative !important; overflow:hidden !important;
+  min-height:142px !important; padding:23px 23px 20px !important;
+  border:1px solid #e5ebef !important; border-radius:17px !important;
+  background:#fff !important;
+  box-shadow:0 5px 18px rgba(23,49,69,.045) !important;
+  justify-content:flex-start !important; gap:13px !important;
+}
+.kpi-card:before {
+  content:""; position:absolute; left:0; top:0; bottom:0; width:4px;
+  background:linear-gradient(180deg,#18a58a,#8de0c6);
+}
+.kpi-card:after {
+  content:""; position:absolute; width:92px; height:92px; right:-35px; bottom:-42px;
+  border-radius:50%; background:rgba(20,161,133,.055);
+}
+.kpi-card:hover {
+  transform:translateY(-4px) !important;
+  box-shadow:0 13px 28px rgba(23,49,69,.10) !important;
+  border-color:#c9e8df !important;
+}
+.kpi-title { font-size:11px !important; font-weight:750 !important; letter-spacing:.075em !important; text-transform:uppercase !important; color:#758696 !important; }
+.kpi-value { font-size:34px !important; line-height:1 !important; font-weight:800 !important; letter-spacing:-.055em !important; color:#17334a !important; }
+.kpi-sub { font-size:12px !important; color:#7b8e9d !important; }
+.charts-row {
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:17px !important; margin-bottom:28px !important;
+}
+.card {
+  padding:23px !important; border:1px solid #e4ebef !important;
+  border-radius:17px !important; background:#fff !important;
+  box-shadow:0 5px 18px rgba(23,49,69,.04) !important;
+}
+.card-title {
+  min-height:32px; padding-bottom:15px !important; margin-bottom:17px !important;
+  border-bottom:1px solid #edf1f4 !important;
+  font-size:14px !important; font-weight:750 !important;
+  letter-spacing:-.01em !important; color:#203c51 !important;
+}
+.main-layout { grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr) !important; gap:20px !important; }
+.search-box input, .grid-inputs input, .input-group input, .input-group select,
+.modal-content input, .modal-content select, input[type=file] {
+  min-height:45px !important; border-radius:10px !important;
+  border:1px solid #dce5eb !important; background:#f8fafb !important;
+}
+button, .ms-btn { border-radius:10px !important; min-height:42px; font-weight:700 !important; }
+table { border-collapse:separate !important; border-spacing:0 !important; }
+thead th { background:#f2f6f7 !important; color:#6b7f8e !important; padding:13px 14px !important; }
+tbody td { padding:13px 14px !important; border-bottom:1px solid #edf1f4 !important; }
+tbody tr:hover { background:#f4faf8 !important; }
+body.dark-mode { --bg-main:#0a1724 !important; --card-bg:#13263a !important; --border-color:#294156 !important; }
+body.dark-mode .kpi-card, body.dark-mode .card, body.dark-mode .dashboard-collapse-bar {
+  background:#13263a !important; border-color:#294156 !important;
+}
+body.dark-mode .kpi-title { color:#a6bac9 !important; }
+body.dark-mode .kpi-value, body.dark-mode .card-title { color:#e9f2f7 !important; }
+body.dark-mode .search-box input, body.dark-mode .grid-inputs input,
+body.dark-mode .input-group input, body.dark-mode .input-group select {
+  background:#0d1d2c !important; border-color:#314a5e !important; color:#e9f2f7 !important;
+}
+@media (max-width: 1100px) and (min-width: 769px) {
+  .kpi-container { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+  .charts-row { grid-template-columns:1fr !important; }
+  .main-layout { grid-template-columns:1fr !important; }
+}
+@media (max-width: 768px) {
+  .welcome-banner { padding:26px 22px !important; min-height:176px !important; }
+  .welcome-banner:after { font-size:9px !important; }
+  .kpi-container { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+  .charts-row { grid-template-columns:1fr !important; }
+  .ms-panel { padding:0 !important; }
+  .card { padding:17px !important; border-radius:15px !important; }
+  .main-layout { grid-template-columns:1fr !important; }
+}
+@media (max-width: 380px) {
+  .kpi-container { grid-template-columns:1fr !important; }
+}
