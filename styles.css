@@ -3304,3 +3304,308 @@ input, select, textarea, button {
         margin-bottom: 10px;
     }
 }
+
+
+/* =========================================================
+   RESPONSIVIDADE GLOBAL — SUSTEIN
+   Camada final para padronizar todas as telas e módulos.
+   ========================================================= */
+html { width: 100%; min-width: 320px; overflow-x: clip; }
+body { width: 100%; min-width: 320px; overflow-x: clip; }
+img, svg, canvas, video { max-width: 100%; }
+button, input, select, textarea { max-width: 100%; }
+.main-content, .ms-panel, .card, .kpi-card,
+.settings-sub-view, .settings-section-content,
+.report-layout, .report-header, .report-body,
+.toolbar-row, .form-grid, .grid-inputs { min-width: 0; }
+.table-container { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { max-width: 100%; }
+input, select, textarea { min-width: 0; }
+.ms-modal, .modal-overlay { overflow-y: auto; }
+.ms-modal .modal-content, .modal-overlay .modal-content {
+    min-width: 0;
+    width: min(100%, 900px);
+    max-height: min(88dvh, 900px);
+    overflow: hidden;
+}
+.ms-modal .modal-body, .modal-overlay .modal-body {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+@media (max-width: 768px) {
+    html, body { min-width: 320px; }
+    body { font-size: 14px; }
+    .main-content,
+    .main-content.dock-left,
+    .main-content.dock-right,
+    .main-content.dock-top,
+    .main-content.dock-bottom,
+    .main-content.dock-left.sidebar-open,
+    .main-content.dock-right.sidebar-open {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 16px 12px calc(100px + env(safe-area-inset-bottom)) !important;
+        align-items: stretch !important;
+    }
+    .welcome-banner { width: 100%; margin: 4px 0 18px; }
+    .welcome-banner h2 { font-size: clamp(1.15rem, 5vw, 1.45rem); }
+    .ms-panel { width: 100%; max-width: 100%; padding: 14px 12px !important; }
+    .ms-panel h2 { flex-wrap: wrap; font-size: 1.05rem; margin-bottom: 16px; }
+    .card, .kpi-card { min-width: 0; }
+    .charts-row, .kpi-container {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px !important;
+        width: 100%;
+    }
+    .chart-container { width: 100%; min-width: 0; height: 210px; }
+    .form-grid, .grid-inputs, .main-layout {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px !important;
+        width: 100%;
+    }
+    .toolbar-row, .report-footer, .action-container, .config-actions {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        flex-direction: row !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        width: 100%;
+    }
+    .toolbar-row > *, .report-footer > *, .action-container > *, .config-actions > * {
+        flex: 1 1 140px;
+        width: auto !important;
+        min-width: 0;
+    }
+    .ms-btn, button.ms-btn {
+        min-height: 42px;
+        white-space: normal;
+        line-height: 1.25;
+    }
+    .search-box, .date-filter-group, .input-group {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        flex-direction: row !important;
+        gap: 8px !important;
+        width: 100%;
+        min-width: 0;
+    }
+    .search-box > *, .date-filter-group > *, .input-group > * {
+        flex: 1 1 150px;
+        width: auto !important;
+        min-width: 0;
+    }
+    .form-group { min-width: 0; width: 100%; }
+    .form-group input, .form-group select, .form-group textarea,
+    input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]),
+    select, textarea {
+        width: 100%;
+        min-width: 0;
+        min-height: 42px;
+        font-size: 16px;
+    }
+    input[type="checkbox"], input[type="radio"], input[type="color"], input[type="range"] {
+        width: auto !important;
+    }
+
+    /* Navegação compacta, com os cinco módulos sempre acessíveis. */
+    .sidebar, .sidebar.dock-left, .sidebar.dock-right,
+    .sidebar.dock-top, .sidebar.dock-bottom,
+    .sidebar.dock-left.mode-icons-floating, .sidebar.dock-right.mode-icons-floating {
+        position: fixed !important;
+        left: 8px !important;
+        right: 8px !important;
+        top: auto !important;
+        bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+        width: auto !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: 76px !important;
+        padding: 7px !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 18px !important;
+        background: var(--card-bg) !important;
+        box-shadow: 0 8px 28px rgba(15, 23, 42, .18) !important;
+        transform: none !important;
+        z-index: 2500 !important;
+    }
+    .sidebar-menu, .sidebar.dock-left .sidebar-menu,
+    .sidebar.dock-right .sidebar-menu, .sidebar.dock-top .sidebar-menu,
+    .sidebar.dock-bottom .sidebar-menu {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        width: 100% !important;
+        align-items: stretch !important;
+    }
+    .sidebar .menu-item, .sidebar-menu li {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+    }
+    .sidebar .menu-item button,
+    .sidebar.mode-icons-floating .menu-item button,
+    .sidebar.dock-top .menu-item button,
+    .sidebar.dock-bottom .menu-item button,
+    .sidebar.dock-right.open .menu-item button {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 3px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 58px !important;
+        padding: 4px 2px !important;
+        border-radius: 12px !important;
+        white-space: normal !important;
+    }
+    .sidebar .menu-item button span:not(.icon) {
+        display: block !important;
+        max-width: 100% !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: clamp(8px, 2.2vw, 10px) !important;
+        line-height: 1.1 !important;
+    }
+    .sidebar .menu-item .icon, .sidebar .material-symbols-rounded.icon {
+        font-size: 21px !important;
+        line-height: 1 !important;
+    }
+    .sidebar .menu-item .panel-preview, #sidebar-pull-tab,
+    #sidebar-toggle-btn, .panel-preview { display: none !important; }
+
+    /* Sub-abas e configurações sem esmagar títulos ou controles. */
+    .settings-menu-buttons, .settings-menu-buttons.grid-view,
+    .settings-menu-buttons:not(.grid-view) {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        width: 100%;
+    }
+    .settings-menu-buttons > *, .settings-menu-buttons .ms-btn {
+        width: 100% !important;
+        min-width: 0;
+        min-height: 44px;
+        padding: 8px !important;
+        font-size: .82rem;
+    }
+    .settings-header, .settings-sub-view > .settings-header,
+    #settings-data-view .settings-header {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    .settings-header h3 { flex: 1 1 160px; min-width: 0; }
+    .settings-section-content, #settings-dashboard-view .settings-section-content,
+    #settings-card-sizes-view .settings-section-content,
+    #settings-data-view .settings-section-content,
+    #settings-manual-view .settings-section-content,
+    #settings-interface-view .settings-section-content,
+    #settings-colors-view .settings-section-content {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 12px !important;
+        width: 100%;
+    }
+    .accent-settings-item, .color-settings-hero,
+    .text-color-settings-controls { min-width: 0; width: 100%; }
+    .accent-color-controls, .accent-color-controls-large,
+    .color-mode-buttons, .text-color-manual-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 100%;
+    }
+
+    /* Tabelas preservam as colunas; o gesto horizontal fica dentro do quadro. */
+    .table-container {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+    .table-container table { width: max-content; min-width: 680px; }
+    .table-container th, .table-container td { white-space: nowrap; }
+    #tabelaTrocas, #tabelaTrocasMonitores { min-width: 760px; }
+    .pagination-controls { display: flex; flex-wrap: wrap; width: 100%; }
+    .fila-item, .activity-feed-item { min-width: 0; }
+    .fila-item { flex-wrap: wrap; }
+    .fila-user-info, .feed-item-content { min-width: 0; overflow-wrap: anywhere; }
+
+    /* Janelas e diálogos usam a altura útil real do telefone. */
+    .ms-modal, .modal-overlay {
+        padding: 10px !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .ms-modal .modal-content, .modal-overlay .modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+        border-radius: 16px !important;
+    }
+    .ms-modal .modal-header { padding: 14px 16px; gap: 8px; }
+    .modal-body { padding: 16px !important; }
+    .modal-buttons { display: flex !important; flex-direction: row !important; flex-wrap: wrap; gap: 8px; }
+    .modal-buttons > * { flex: 1 1 120px; width: auto !important; }
+    .login-card { width: min(100% - 24px, 420px); padding: 28px 20px !important; }
+    #toast-container { left: 12px; right: 12px; bottom: calc(96px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 480px) {
+    .main-content, .main-content.dock-left, .main-content.dock-right,
+    .main-content.dock-top, .main-content.dock-bottom {
+        padding-left: 9px !important;
+        padding-right: 9px !important;
+    }
+    .ms-panel { padding: 12px 9px !important; }
+    .card, .kpi-card { padding: 12px !important; }
+    .welcome-banner h2 { font-size: 1.12rem; }
+    .settings-menu-buttons, .settings-menu-buttons.grid-view,
+    .settings-menu-buttons:not(.grid-view) {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+    .toolbar-row > *, .report-footer > *, .action-container > *,
+    .config-actions > * { flex-basis: 100%; }
+    .modal-buttons > * { flex-basis: 100%; }
+    .dashboard-collapse-bar { gap: 8px !important; }
+    .dashboard-collapse-title { min-width: 0; }
+    .dashboard-collapse-title strong { overflow-wrap: anywhere; }
+    .sector-select-row { grid-template-columns: minmax(0, 1fr) !important; }
+}
+
+@media (max-width: 360px) {
+    .sidebar, .sidebar.dock-left, .sidebar.dock-right,
+    .sidebar.dock-top, .sidebar.dock-bottom {
+        left: 4px !important;
+        right: 4px !important;
+        padding: 5px !important;
+    }
+    .sidebar-menu { gap: 2px !important; }
+    .sidebar .menu-item button { height: 54px !important; }
+    .sidebar .menu-item button span:not(.icon) { font-size: 8px !important; }
+}
+
+@media (orientation: landscape) and (max-width: 900px) {
+    .sidebar, .sidebar.dock-left, .sidebar.dock-right,
+    .sidebar.dock-top, .sidebar.dock-bottom {
+        max-height: 66px !important;
+    }
+    .sidebar .menu-item button { height: 50px !important; }
+    .main-content, .main-content.dock-left, .main-content.dock-right,
+    .main-content.dock-top, .main-content.dock-bottom {
+        padding-bottom: calc(84px + env(safe-area-inset-bottom)) !important;
+    }
+}
