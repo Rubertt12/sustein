@@ -944,26 +944,29 @@
                     </div>
                 </div>
 
+                <div class="settings-group-item data-management-card data-management-card-wide">
+                    <div>
+                        <div class="data-card-heading"><span class="material-symbols-rounded">backup</span><div class="settings-item-title">Backup e Restauração</div></div>
+                        <p class="text-secondary" style="font-size: 14px;">Gere um arquivo JSON com trocas, filas, inventários carregados e configurações. Guarde-o em local seguro e use-o para restaurar o sistema quando necessário.</p>
+                        <p class="text-secondary" style="font-size: 12px;">As permissões de acesso às pastas e os vínculos dos arquivos locais não podem ser exportados pelo navegador; após restaurar, selecione novamente as planilhas de origem.</p>
+                        <div id="backup-status" class="info data-status" role="status" aria-live="polite">Nenhum backup realizado nesta sessão.</div>
+                    </div>
+                    <div class="config-actions data-actions">
+                        <button type="button" onclick="exportarBackupSustein()" class="ms-btn ms-btn-secondary">
+                            <span class="material-symbols-rounded">download</span> Baixar Backup Completo
+                        </button>
+                        <input type="file" id="restoreBackupFile" accept=".json,application/json" hidden onchange="selecionarBackupSustein(event)">
+                        <button type="button" onclick="document.getElementById('restoreBackupFile').click()" class="ms-btn">
+                            <span class="material-symbols-rounded">restore</span> Restaurar Backup
+                        </button>
+                    </div>
+                </div>
                 <div class="settings-group-item data-management-card data-danger-card data-management-card-wide">
                     <div>
                         <div class="data-card-heading"><span class="material-symbols-rounded">delete_forever</span><div class="settings-item-title">Limpeza de Dados</div></div>
-                        <p class="text-secondary" style="font-size: 14px;">Apaga TODOS os dados salvos no navegador (planilha, trocas, etc). Use com cuidado.</p>
+                        <p class="text-secondary" style="font-size: 14px;">Remove registros, configurações e inventários locais, incluindo o banco IndexedDB. Faça um backup antes: esta ação não pode ser desfeita.</p>
                     </div>
-                    <button onclick="showPromptModal(
-                        'Confirmação de Limpeza de Dados',
-                        'Para apagar TODOS os dados salvos no navegador, digite a senha de segurança:',
-                        'Digite a senha',
-                        (password) => {
-                            const correctPassword = 'admin123'; // Senha de segurança
-                            if (password === correctPassword) {
-                                localStorage.clear();
-                                location.reload();
-                                showToast('Todos os dados foram limpos com sucesso!', 'success');
-                            } else {
-                                showToast('Senha incorreta. A limpeza de dados foi cancelada.', 'error');
-                            }
-                        }
-                    )" class="ms-btn btn-danger-clear data-danger-action">
+                    <button type="button" onclick="confirmarLimpezaCompletaSustein()" class="ms-btn btn-danger-clear data-danger-action">
                         <span class="material-symbols-rounded">warning</span> Limpar Toda a Memória do Sistema
                     </button>
                 </div>
@@ -2959,6 +2962,136 @@
                 }
             });
         });
+    }
+
+    // Backup integral dos dados operacionais e das preferências do Sustein.
+    // File System Handles não são serializáveis e precisam ser vinculados novamente após a restauração.
+    const SUSTEIN_BACKUP_STORAGE_KEYS = [
+        'trocasRealizadas', 'filaAgendamentoMonitores', 'trocasMonitores', 'filaAgendamento',
+        'setoresCadastrados', 'modelosComputadores', 'maquinaModeloMap', 'visualizacaoRelatorio',
+        'sidebarAberto', 'dockPosition', 'sideDockMode', 'dashboardSettings', 'dashboardCardOrder',
+        'dashboardKpiOrder', 'vokeKeys', 'modelosNovosComputadores', 'filaRemovidosPendentesSync',
+        'buttonTextColorMode', 'buttonTextColor', 'accentColor', 'systemTextColorMode',
+        'systemTextColor', 'darkMode'
+    ];
+
+    async function exportarBackupSustein() {
+        const status = document.getElementById('backup-status');
+        try {
+            salvarTudo();
+            const backup = {
+                format: 'sustein-backup',
+                version: 1,
+                createdAt: new Date().toISOString(),
+                app: 'Sustein — Controle de Inventário e Trocas',
+                localStorage: {},
+                indexedDB: {
+                    ativos: await db.ativos.toArray(),
+                    monitores: await db.monitores.toArray()
+                }
+            };
+            SUSTEIN_BACKUP_STORAGE_KEYS.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value !== null) backup.localStorage[key] = value;
+            });
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+            link.href = url;
+            link.download = 'sustein-backup-' + stamp + '.json';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+            if (status) status.textContent = 'Backup gerado em ' + new Date().toLocaleString('pt-BR') + '. Salve o arquivo fora deste dispositivo.';
+            showToast('Backup completo gerado com sucesso.', 'success');
+        } catch (error) {
+            console.error('Falha ao gerar backup:', error);
+            if (status) status.textContent = 'Não foi possível gerar o backup. Consulte o console.';
+            showToast('Falha ao gerar backup. Nenhum dado foi removido.', 'error');
+        }
+    }
+
+    async function selecionarBackupSustein(event) {
+        const file = event.target.files && event.target.files[0];
+        event.target.value = '';
+        if (!file) return;
+        if (file.size > 50 * 1024 * 1024) {
+            showToast('O arquivo excede o limite de 50 MB.', 'error');
+            return;
+        }
+        try {
+            const backup = JSON.parse(await file.text());
+            const valido = backup && backup.format === 'sustein-backup' && backup.version === 1 &&
+                backup.localStorage && typeof backup.localStorage === 'object' &&
+                backup.indexedDB && Array.isArray(backup.indexedDB.ativos) &&
+                Array.isArray(backup.indexedDB.monitores);
+            if (!valido) throw new Error('Formato de backup inválido ou versão não suportada.');
+            if (![...backup.indexedDB.ativos, ...backup.indexedDB.monitores].every(item => item && typeof item === 'object' && !Array.isArray(item))) {
+                throw new Error('O backup contém registros inválidos.');
+            }
+            showPromptModal(
+                'Confirmar restauração',
+                'A restauração substituirá os registros e configurações atuais pelos dados do backup. Digite RESTAURAR para continuar.',
+                'Digite RESTAURAR',
+                value => {
+                    if (value !== 'RESTAURAR') {
+                        showToast('Restauração cancelada: confirmação não corresponde.', 'info');
+                        return;
+                    }
+                    void restaurarBackupSustein(backup);
+                }
+            );
+        } catch (error) {
+            console.error('Backup inválido:', error);
+            showToast('Não foi possível ler este backup: ' + error.message, 'error');
+        }
+    }
+
+    async function restaurarBackupSustein(backup) {
+        try {
+            await db.transaction('rw', db.ativos, db.monitores, async () => {
+                await db.ativos.clear();
+                await db.monitores.clear();
+                if (backup.indexedDB.ativos.length) await db.ativos.bulkPut(backup.indexedDB.ativos);
+                if (backup.indexedDB.monitores.length) await db.monitores.bulkPut(backup.indexedDB.monitores);
+            });
+            SUSTEIN_BACKUP_STORAGE_KEYS.forEach(key => localStorage.removeItem(key));
+            SUSTEIN_BACKUP_STORAGE_KEYS.forEach(key => {
+                const value = backup.localStorage[key];
+                if (typeof value === 'string') localStorage.setItem(key, value);
+            });
+            showToast('Backup restaurado. O sistema será recarregado.', 'success');
+            setTimeout(() => location.reload(), 900);
+        } catch (error) {
+            console.error('Falha ao restaurar backup:', error);
+            showToast('Falha na restauração. Verifique o arquivo e tente novamente.', 'error');
+        }
+    }
+
+    function confirmarLimpezaCompletaSustein() {
+        showPromptModal(
+            'Limpeza completa do Sustein',
+            'Esta ação apagará os dados locais e o banco de inventário. Faça um backup antes. Digite APAGAR para confirmar.',
+            'Digite APAGAR',
+            async value => {
+                if (value !== 'APAGAR') {
+                    showToast('Limpeza cancelada: confirmação não corresponde.', 'info');
+                    return;
+                }
+                try {
+                    db.close();
+                    await db.delete();
+                    SUSTEIN_BACKUP_STORAGE_KEYS.forEach(key => localStorage.removeItem(key));
+                    showToast('Dados locais removidos. Recarregando o sistema...', 'success');
+                    setTimeout(() => location.reload(), 900);
+                } catch (error) {
+                    console.error('Falha na limpeza completa:', error);
+                    showToast('Não foi possível concluir a limpeza dos dados.', 'error');
+                }
+            }
+        );
     }
 
     function salvarTudo() {
